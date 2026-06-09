@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repanstore - Top Up Game Terpercaya</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 12px;
+            --nav-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding-bottom: calc(var(--nav-height) + 20px);
+            min-height: 100vh;
+        }
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--bg-card);
+        }
+
+        /* MODIFIKASI CSS: Header diatur Full Width dan Rata Kiri */
+        .header-content {
+            max-width: 100%; /* Diubah dari 600px menjadi 100% agar memenuhi layar */
+            margin: 0;       /* Diubah dari 0 auto menjadi 0 agar rata kiri */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Diubah dari space-between agar konten rapat ke kiri */
+            gap: 20px; /* Menambah jarak antar elemen header */
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        main {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .search-bar {
+            background: var(--bg-input);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar:focus-within { border-color: var(--primary); }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .section-title {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .game-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            main {
+                max-width: 1200px; /* Batasi lebar konten utama di layar besar agar rapi */
+            }
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .game-card:hover, .game-card:active {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: var(--primary);
+        }
+
+        .game-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .game-info { padding: 12px; }
+
+        .game-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-publisher {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .form-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid transparent;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-input:focus { border-color: var(--primary); }
+
+        .grid-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .option-card {
+            background: var(--bg-input);
+            border: 2px solid transparent;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .option-amount { font-weight: 700; font-size: 1rem; display: block; }
+        .option-price { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; display: block; }
+
+        .payment-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .payment-item {
+            background: var(--bg-input);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .payment-item.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .payment-logo { font-weight: 700; color: white; }
+        .payment-price { font-weight: 600; color: var(--primary); }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-checkout:disabled {
+            background: var(--bg-input);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-checkout:hover:not(:disabled) { background: var(--primary-hover); }
+
+        .history-list { display: flex; flex-direction: column; gap: 15px; }
+
+        .history-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .history-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-input);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .history-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .history-details { flex: 1; }
+        .history-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+        .history-date { font-size: 0.75rem; color: var(--text-muted); }
+
+        .history-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+
+        .profile-header {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .menu-list {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--bg-input);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: rgba(255,255,255,0.05); }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--bg-card);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            padding: 8px;
+            width: 60px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; display: block; }
+
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease-out forwards;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        svg { width: 1em; height: 1em; fill: currentColor; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <!-- MODIFIKASI HTML: Nama diubah menjadi Repanstore & ditambahkan onClick agar bisa klik logo ke home -->
+            <div id="header-left" class="logo" onclick="navigateTo('beranda')">
+                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                Repanstore
+            </div>
+            <div id="header-center" class="header-title hidden">Beranda</div>
+            <div id="header-right"></div>
+        </div>
+    </header>
+
+    <main id="app"></main>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('beranda')">
+            <span class="nav-icon">🏠</span>
+            <span>Beranda</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('riwayat')">
+            <span class="nav-icon">📜</span>
+            <span>Riwayat</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('profil')">
+            <span class="nav-icon">👤</span>
+            <span>Profil</span>
+        </div>
+    </nav>
+
+    <div id="toast-container"></div>
+
+    <script>
+        // --- DATA STATE ---
+        // ✅ Nama file gambar disesuaikan persis dengan yang ada di folder
+        const games = [
+            { id: 1, name: 'Mobile Legends',  publisher: 'Moonton',        img: 'Mobile Legends.jpg' },
+            { id: 2, name: 'PUBG Mobile',     publisher: 'Tencent',        img: 'pubg.jpg' },
+            { id: 3, name: 'Free Fire',       publisher: 'Garena',         img: 'ff.jpg' },
+            { id: 4, name: 'Genshin Impact',  publisher: 'HoYoverse',      img: 'genshin.jpg' },
+            { id: 5, name: 'Valorant',        publisher: 'Riot Games',     img: 'Valorant Icon.jpg' },
+            { id: 6, name: 'Honor of Kings',  publisher: 'Level Infinite', img: 'hok.jpg' },
+        ];
+
+        const formatRupiah = (number) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        };
+
+        let transactions = [
+            { id: 'TRX-001', date: '2023-10-25', item: 'Mobile Legends - 86 Diamonds', price: 20000, status: 'success', gameImg: 'Mobile Legends.jpg' },
+            { id: 'TRX-002', date: '2023-10-24', item: 'PUBG Mobile - 60 UC', price: 15000, status: 'pending', gameImg: 'pubg.jpg' },
+        ];
+
+        let currentOrder = { game: null, userId: '', zoneId: '', item: null, payment: null };
+
+        // --- VIEWS ---
+        const renderBeranda = () => {
+            return `
+                <div class="search-bar">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Cari game favoritmu..." onkeyup="filterGames()">
+                </div>
+                <h2 class="section-title">Game Populer</h2>
+                <div class="game-grid" id="gameList">
+                    ${games.map(game => createGameCard(game)).join('')}
+                </div>
+            `;
+        };
+
+        const createGameCard = (game) => {
+            return `
+                <div class="game-card" onclick="openDetail(${game.id})">
+                    <img src="${game.img}" alt="${game.name}" class="game-img">
+                    <div class="game-info">
+                        <div class="game-name">${game.name}</div>
+                        <div class="game-publisher">${game.publisher}</div>
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderDetail = () => {
+            if (!currentOrder.game) return '<div class="text-center" style="padding:50px">Game tidak ditemukan</div>';
+
+            const nominals = [
+                { amount: '5 Diamonds',    price: 1500 },
+                { amount: '12 Diamonds',   price: 3500 },
+                { amount: '50 Diamonds',   price: 14000 },
+                { amount: '70 Diamonds',   price: 20000 },
+                { amount: '150 Diamonds',  price: 43000 },
+                { amount: '350 Diamonds',  price: 100000 },
+                { amount: '500 Diamonds',  price: 145000 },
+                { amount: '1000 Diamonds', price: 290000 },
+            ];
+
+            const payments = [
+                { name: 'QRIS (Instant)', fee: 0 },
+                { name: 'Dana',           fee: 500 },
+                { name: 'GoPay',          fee: 1000 },
+                { name: 'OVO',            fee: 1000 },
+                { name: 'ShopeePay',      fee: 750 },
+                { name: 'Bank Transfer',  fee: 2000 },
+            ];
+
+            return `
+                <div onclick="navigateTo('beranda')" style="cursor:pointer; color:var(--text-muted); margin-bottom:15px; display:flex; align-items:center; gap:5px;">
+                    ← Kembali
+                </div>
+                <div class="detail-header">
+                    <img src="${currentOrder.game.img}" class="detail-img">
+                    <div>
+                        <h1 style="font-size:1.2rem; margin-bottom:5px;">${currentOrder.game.name}</h1>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Layanan aktif 24 Jam</p>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-label"><span class="step-number">1</span> Masukkan User ID</div>
+                    <div class="input-group">
+                        <input type="number" class="form-input" placeholder="User ID" oninput="updateUserId(this.value)">
+                        ${currentOrder.game.id === 1 ? '<input type="number" class="form-input" placeholder="Zone ID" oninput="updateZoneId(this.value)">' : ''}
+                    </div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">*Untuk MLBB gabungkan User ID dan Zone ID (Contoh: 12345678 1234)</p>
+                </div>
+                <div class="form-section">
+                    <div class="section-label"><span class="step-number">2</span> Pilih Nominal</div>
+                    <div class="grid-options">
+                        ${nominals.map((n, idx) => `
+                            <div class="option-card" id="item-${idx}" onclick="selectItem(${idx}, '${n.amount}', ${n.price})">
+                                <span class="option-amount">${n.amount}</span>
+                                <span class="option-price">${formatRupiah(n.price)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-label"><span class="step-number">3</span> Pilih Pembayaran</div>
+                    <div class="payment-list">
+                        ${payments.map((p, idx) => `
+                            <div class="payment-item" id="pay-${idx}" onclick="selectPayment(${idx}, '${p.name}', ${p.fee})">
+                                <span class="payment-logo">${p.name}</span>
+                                <span class="payment-price">${p.fee > 0 ? '+ ' + formatRupiah(p.fee) : 'Bebas Admin'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="form-section">
+                    <div class="section-label"><span class="step-number">4</span> Konfirmasi</div>
+                    <div style="margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <span style="color:var(--text-muted)">Total Pembayaran:</span>
+                            <span style="font-weight:bold; color:var(--primary); font-size:1.1rem;" id="totalPrice">Rp 0</span>
+                        </div>
+                        <input type="text" class="form-input" placeholder="Nomor WhatsApp (Opsional)" style="margin-top:10px;">
+                    </div>
+                    <button class="btn-checkout" id="btnBuy" onclick="processTransaction()">
+                        <span>Beli Sekarang</span>
+                    </button>
+                </div>
+            `;
+        };
+
+        const renderRiwayat = () => {
+            if (transactions.length === 0) {
+                return `
+                    <div class="text-center" style="padding: 50px 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📭</div>
+                        <h3>Belum ada transaksi</h3>
+                        <p style="color:var(--text-muted); margin-bottom:20px;">Kamu belum melakukan top up apapun.</p>
+                        <button class="btn-checkout" onclick="navigateTo('beranda')" style="width:auto; padding: 10px 20px;">Cari Game</button>
+                    </div>
+                `;
+            }
+            return `
+                <h2 class="section-title">Riwayat Transaksi</h2>
+                <div class="history-list">
+                    ${transactions.map(trx => `
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <img src="${trx.gameImg || ''}" alt="" onerror="this.style.display='none'; this.parentNode.textContent='🎮';">
+                            </div>
+                            <div class="history-details">
+                                <div class="history-title">${trx.item}</div>
+                                <div class="history-date">${trx.date} • ${trx.id}</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div style="font-weight:700;">${formatRupiah(trx.price)}</div>
+                                <div class="history-status ${trx.status === 'success' ? 'status-success' : 'status-pending'}">
+                                    ${trx.status === 'success' ? 'Sukses' : 'Proses'}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        };
+
+        const renderProfil = () => {
+            return `
+                <div class="profile-header">
+                    <div class="avatar">👤</div>
+                    <h2>Repan</h2>
+                    <p style="color:var(--text-muted)">Member sejak 2023</p>
+                    <div style="margin-top:15px; display:inline-block; background:var(--bg-input); padding:5px 15px; border-radius:20px; font-size:0.8rem;">
+                        Saldo: Rp 0
+                    </div>
+                </div>
+                <h2 class="section-title">Pengaturan Akun</h2>
+                <div class="menu-list">
+                    <div class="menu-item" onclick="showToast('Fitur verifikasi belum tersedia', 'warning')">
+                        <span>Verifikasi Akun</span><span>→</span>
+                    </div>
+                    <div class="menu-item" onclick="showToast('Fitur belum tersedia', 'warning')">
+                        <span>Metode Pembayaran Saya</span><span>→</span>
+                    </div>
+                    <div class="menu-item" onclick="showToast('Tidak ada notifikasi baru', 'success')">
+                        <span>Pusat Bantuan</span><span>→</span>
+                    </div>
+                    <div class="menu-item" style="color:var(--danger)" onclick="showToast('Logout berhasil', 'success'); setTimeout(()=> navigateTo('beranda'), 1000)">
+                        <span>Keluar</span><span>🚪</span>
+                    </div>
+                </div>
+            `;
+        };
+
+        // --- NAVIGATION ---
+        function navigateTo(page) {
+            const app = document.getElementById('app');
+            const titleEl = document.getElementById('header-center');
+            const logoEl = document.getElementById('header-left');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => item.classList.remove('active'));
+            if (page === 'beranda') navItems[0].classList.add('active');
+            if (page === 'riwayat') navItems[1].classList.add('active');
+            if (page === 'profil') navItems[2].classList.add('active');
+
+            if (page === 'beranda') {
+                titleEl.classList.add('hidden');
+                logoEl.classList.remove('hidden');
+                app.innerHTML = renderBeranda();
+            } else if (page === 'riwayat') {
+                titleEl.textContent = 'Riwayat Transaksi';
+                titleEl.classList.remove('hidden');
+                logoEl.classList.add('hidden');
+                app.innerHTML = renderRiwayat();
+            } else if (page === 'profil') {
+                titleEl.textContent = 'Profil Saya';
+                titleEl.classList.remove('hidden');
+                logoEl.classList.add('hidden');
+                app.innerHTML = renderProfil();
+            } else if (page === 'detail') {
+                titleEl.textContent = 'Detail Top Up';
+                titleEl.classList.remove('hidden');
+                logoEl.classList.add('hidden');
+                app.innerHTML = renderDetail();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // --- FEATURES ---
+        function filterGames() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = games.filter(g => g.name.toLowerCase().includes(query));
+            document.getElementById('gameList').innerHTML = filtered.map(game => createGameCard(game)).join('');
+        }
+
+        function openDetail(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (game) {
+                currentOrder = { game, userId: '', zoneId: '', item: null, payment: null };
+                navigateTo('detail');
+            }
+        }
+
+        function updateUserId(val) { currentOrder.userId = val; calculateTotal(); }
+        function updateZoneId(val) { currentOrder.zoneId = val; }
+
+        function selectItem(idx, amount, price) {
+            document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+            document.getElementById('item-' + idx).classList.add('selected');
+            currentOrder.item = { amount, price };
+            calculateTotal();
+        }
+
+        function selectPayment(idx, name, fee) {
+            document.querySelectorAll('.payment-item').forEach(el => el.classList.remove('selected'));
+            document.getElementById('pay-' + idx).classList.add('selected');
+            currentOrder.payment = { name, fee };
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const totalEl = document.getElementById('totalPrice');
+            if (!totalEl) return;
+            let itemPrice = currentOrder.item ? currentOrder.item.price : 0;
+            let paymentFee = currentOrder.payment ? currentOrder.payment.fee : 0;
+            totalEl.textContent = formatRupiah(itemPrice + paymentFee);
+        }
+
+        function processTransaction() {
+            if (!currentOrder.userId)  { showToast('Mohon isi User ID', 'error'); return; }
+            if (!currentOrder.item)    { showToast('Mohon pilih nominal top up', 'error'); return; }
+            if (!currentOrder.payment) { showToast('Mohon pilih metode pembayaran', 'error'); return; }
+
+            const btn = document.getElementById('btnBuy');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loader"></div> Memproses...';
+
+            setTimeout(() => {
+                transactions.unshift({
+                    id: 'TRX-' + Math.floor(1000 + Math.random() * 9000),
+                    date: new Date().toISOString().split('T')[0],
+                    item: currentOrder.game.name + ' - ' + currentOrder.item.amount,
+                    price: currentOrder.item.price + currentOrder.payment.fee,
+                    status: 'success',
+                    gameImg: currentOrder.game.img
+                });
+                showToast('Top Up Berhasil!', 'success');
+                setTimeout(() => navigateTo('riwayat'), 1000);
+            }, 2000);
+        }
+
+        function showToast(message, type) {
+            type = type || 'success';
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            const icon = type === 'success' ? '✅' : (type === 'warning' ? '⚠️' : '❌');
+            toast.innerHTML = '<span>' + icon + '</span> <span>' + message + '</span>';
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        window.onload = () => { navigateTo('beranda'); };
+    </script>
+</body>
+</html>
